@@ -13,7 +13,7 @@
  Slide out controls that map to the other key bindings is currently being implemented and
  will be released soon.
  
-*/
+ */
 
 class Controls {
    

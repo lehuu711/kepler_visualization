@@ -5,6 +5,7 @@
  blprnt@blprnt.com
  
  You can toggle between view modes with the keys 4,3,2,1,` 
+ 
  */
 
 // Import libraries
@@ -73,11 +74,11 @@ ExoPlanet markedPlanet = null;
 
 SidePanel panel = new SidePanel(xScreen,yScreen,300);
 
-ModeButton fieldFlip = new ModeButton(48,350,20,20,"Flip between orbit and plot field.");
-ModeButton fieldTilt = new ModeButton(48,400,20,20,"Tilt view of the plane.");
-ModeButton noSort = new ModeButton(48,450,20,20,"Unsort the planets.");
-ModeButton sizeSort = new ModeButton(48,500,20,20, "Sort Exoplanets by size.");
-ModeButton tempSort = new ModeButton(48,550,20,20, "Sort Exoplanets by temperature.");
+ModeButton fieldFlip = new ModeButton(48,350,20,20,"Flip between Views");
+ModeButton fieldTilt = new ModeButton(48,400,20,20,"Tilt Plane");
+ModeButton noSort = new ModeButton(48,450,20,20,"Unsort");
+ModeButton sizeSort = new ModeButton(48,500,20,20, "Sort by Size");
+ModeButton tempSort = new ModeButton(48,550,20,20, "Sort by Temperature");
 
 
 void setup() {
@@ -112,7 +113,7 @@ void getPlanets(String url, boolean is2012) {
       p = new ExoPlanet().fromCSV2012(split(pArray[i], ",")).init();
     } 
     else {
-      p = new ExoPlanet().fromCSV(split(pArray[i], ",")).init();
+      p = new ExoPlanet().fromCSV2011(split(pArray[i], ",")).init();
     }
     planets.add(p);
     maxSize = max(p.radius, maxSize);

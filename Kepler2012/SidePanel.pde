@@ -1,13 +1,14 @@
 /*
-    
-   SidePanel Class for displaying Planet data. The display
-   is designed specifically for displaying the data for these
-   Exoplanets. Modification will be needed if this class is to
-   be used in a different project.
 
-  SidePanel will be implemented in CENTER rectMode.
-  
+ SidePanel Class for displaying Planet data. The display
+ is designed specifically for displaying the data for these
+ Exoplanets. Modification will be needed if this class is to
+ be used in a different project.
+
+ SidePanel will be implemented in CENTER rectMode. 
+ 
  */
+ 
 class SidePanel {
   
   //Coordinate values

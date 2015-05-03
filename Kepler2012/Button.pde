@@ -2,8 +2,7 @@
 
     Button Class: Simple Button Class
 
-
-*/
+ */
 
 class Button {
   
