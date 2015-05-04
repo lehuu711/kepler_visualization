@@ -1,3 +1,13 @@
+/*
+ 
+ Kepler Visualization - ModeButton Class
+ 
+ @ASTR051 Squirtle Squad
+ @May 2015
+ Specific type of button used to switch between modes.
+ 
+ */
+
 class ModeButton extends Button {
   
   ModeButton(float x, float y, float xSize, float ySize, String description) {
@@ -17,4 +27,5 @@ class ModeButton extends Button {
     super.render();
     super.mouseOver();
   }
+  
 }

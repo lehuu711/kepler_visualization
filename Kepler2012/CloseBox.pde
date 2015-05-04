@@ -1,4 +1,12 @@
-/* Specific type of Button */
+/* 
+ 
+ Kepler Visualization - CloseBox Class
+ 
+ @ASTR051 Squirtle Squad
+ @May 2015
+ Specific type of button used to exit. 
+ 
+ */
 
 class CloseBox extends Button {
   
@@ -19,7 +27,6 @@ class CloseBox extends Button {
     super.render();
     line(x-xSize/2,y-ySize/2,x+xSize/2,y+ySize/2);
     line(x+xSize/2,y-ySize/2,x-xSize/2,y+ySize/2);
-    
-    
   }
+  
 }

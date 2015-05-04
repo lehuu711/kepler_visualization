@@ -1,29 +1,31 @@
 /*
 
- SidePanel Class for displaying Planet data. The display
- is designed specifically for displaying the data for these
- Exoplanets. Modification will be needed if this class is to
+ Kepler Visualization - SidePanel Class
+ 
+ @ASTR051 Squirtle Squad
+ @May 2015
+ This display is designed specifically to show the exoplanet data. 
+ Modification will be needed if this class is to
  be used in a different project.
-
  SidePanel will be implemented in CENTER rectMode. 
  
  */
  
 class SidePanel {
   
-  //Coordinate values
+  // Coordinate values
   float x;
   float y;
-  float xMin; //Some portion of the screen size
+  float xMin; // Some portion of the screen size
   float xMax;
   
-  float xInit; //Variable needed for refresh function
+  float xInit; // Variable needed for refresh function
   
-  //Size Variables
+  // Size Variables
   float xSize;
   float ySize;
   
-  //Variables to move box
+  // Variables to move box
   float xMove;
   float txMove;
   
@@ -32,7 +34,7 @@ class SidePanel {
   ExoPlanet p;
   CloseBox b;
   
-  //Constructor
+  // Constructor
   SidePanel(float xScreen, float yScreen, float xWidth) {
     this.x = xScreen+xWidth/2;
     this.y = yScreen/2;
@@ -54,8 +56,8 @@ class SidePanel {
     b.setDesc(false);
   }
   
-  //Add in an ExoPlanet to generate data from
-  //Also sets move param
+  // Add in an ExoPlanet to generate data from
+  // Also sets move param
   void setPlanet(ExoPlanet p) {
     this.p = p;
     txMove = -1.5*xSize;
@@ -70,14 +72,14 @@ class SidePanel {
     txMove = 1.5*xSize;
   }
   
-  //Resets parameters (for when Planet changes)
+  // Resets parameters (for when Planet changes)
   void refreshPanel() {
     clearPanel();
     x = xInit;
     xMove = 0;
   }
   
-  //Print the ExoPlanet data onto the panel
+  // Print the ExoPlanet data onto the panel
   void printText() {
     if(p == null) {
       println("Error: No Exoplanet data was found!");
@@ -100,7 +102,7 @@ class SidePanel {
     textAlign(CENTER);
     text("KOI ID: "+p.KOI,startX,startY-fontH*1.5,textW,fontH);
     
-    //Left Column: Data Name
+    // Left Column: Data Name
     textSize(14);
     textAlign(LEFT);
     text("Period (days)", startX,startY+fontH*0,textW,fontH);
@@ -118,7 +120,7 @@ class SidePanel {
     text("---", startX,startY+fontH*12,textW,fontH);
     text("---", startX,startY+fontH*13,textW,fontH);
     
-    //Right Column: Data
+    // Right Column: Data
     textAlign(RIGHT);
     text(p.period+"", startX,startY+fontH*0,textW,fontH);
     text(p.radius+"", startX,startY+fontH*1,textW,fontH);
@@ -138,17 +140,17 @@ class SidePanel {
     text("---", startX,startY+fontH*13,textW,fontH);
   }
   
-  //Draws a line with the Planet's coordinates
+  // Draws a line with the Planet's coordinates
   void connect() {
     stroke(255);
     strokeWeight(1);
     line(this.x,this.y,p.x,y);
   }
   
-  //Draw the panel
+  // Draw the panel
   void render() {
     rectMode(CENTER);
-    //Update the movement;
+    // Update the movement;
     xMove += (txMove - xMove) * 0.06;
     
     x = xInit+xMove;
@@ -159,7 +161,7 @@ class SidePanel {
     fill(10,250);
     rect(x,y,xSize,ySize);
     
-    //Close Button
+    // Close Button
     b.update(x+xSize/2-11,y-ySize/2+10);
     b.render();
     if (mouseClicked && b.isClicked(mouseClicked)) {
@@ -167,7 +169,7 @@ class SidePanel {
       mouseClicked = false;
     }
     
-    //Text
+    // Text
     if (p != null) {
       printText();
     }

@@ -1,12 +1,16 @@
 /*
 
-    Button Class: Simple Button Class
+ Kepler Visualization - Button Class
+ 
+ @ASTR051 Squirtle Squad
+ @May 2015
+ Simple buttons class. 
 
  */
 
 class Button {
   
-  //Standard Parameters
+  // Standard Parameters
   float x;
   float y;
   float xSize;
@@ -15,7 +19,7 @@ class Button {
   
   String description; //Description for button
   
-  //Constructor
+  // Constructor
   Button(float x, float y, float xSize, float ySize, String description) {
     this.x = x;
     this.y = y;
@@ -24,7 +28,7 @@ class Button {
     this.description = description;
   }
   
-  //Checks if we've clicked on box given that mouse has clicked
+  // Checks if we've clicked on box given that mouse has clicked
   boolean isClicked(boolean mouseClicked) {
     if (mouseClicked) {
       return contains(mouseX,mouseY);
@@ -32,7 +36,7 @@ class Button {
     return false;
   }
   
-  //Show or hide the description box
+  // Show or hide the description box
   void setDesc(boolean desc) {
     showDesc = desc;
   }
@@ -42,12 +46,12 @@ class Button {
     this.y = y;
   }
   
-  //Check if (x,y) contained in coordinates (remember using CENTER rectMode)
+  // Check if (x,y) contained in coordinates (remember using CENTER rectMode)
   boolean contains(float xOther, float yOther) {
     return abs(xOther-x) <= xSize/2 && abs(yOther-y) <= ySize/2;
   }
   
-   //Draw: Very Basic
+   // Draw: Very Basic
   void render() {
     rectMode(CENTER);
     noFill();
@@ -57,7 +61,7 @@ class Button {
     }
   }
   
-  //Displays the description when mouse goes over
+  // Displays the description when mouse goes over
   void mouseOver() {
     if (contains(mouseX,mouseY)) {
       float fSize = 14;
@@ -84,4 +88,5 @@ class Button {
       text(description,x,y,w,h);
     }
   }
+  
 }

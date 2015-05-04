@@ -1,17 +1,20 @@
 /*
 
- Kepler Visualization - Controls
+ Kepler Visualization - Controls Class
  
  GUI controls added by Lon Riesberg, Laboratory for Atmospheric and Space Physics
  lon@ieee.org
  
- April, 2012
- 
+ @Jer Thorp
+ @April 2012
  Current release consists of a vertical slider for zoom control.  The slider can be toggled
  on/off by pressing the 'c' key.
- 
  Slide out controls that map to the other key bindings is currently being implemented and
  will be released soon.
+ 
+ @ASTR051 Squirtle Squad
+ @May 2015
+ Replaced key bindings with on-screen buttons. Still able to toggle slider with 'c' key.
  
  */
 
@@ -28,7 +31,6 @@ class Controls {
    int sliderX;                       // x-coordinate of left-side slider edge                     
    
    Controls () {
-      
       barX = 40;
       barWidth = 15;
  
@@ -46,7 +48,6 @@ class Controls {
       sliderY = minY;     
    }
    
-   
    void render() {
       rectMode(CENTER);
 
@@ -62,7 +63,6 @@ class Controls {
       rect(sliderX+sliderWidth/2, sliderY+sliderHeight/2, sliderWidth, sliderHeight);
    }
    
-   
    float getZoomValue(int y) {
       if ((y >= minY) && (y <= (maxY - sliderHeight/2))) {
          sliderY = (int) (y - (sliderHeight/2));     
@@ -73,8 +73,7 @@ class Controls {
       }     
       return sliderValue;
    }
-   
-   
+    
    void updateZoomSlider(float value) {
       int tempY = (int) (value / valuePerY) + minY;
       if ((tempY >= minY) && (tempY <= (maxY-sliderHeight))) {
@@ -83,13 +82,13 @@ class Controls {
       }
    }
    
-   
    boolean isZoomSliderEvent(int x, int y) {
       int slop = 50;  // number of pixels above or below slider that's acceptable.  provided for ease of use.
       int sliderTop = (int) (sliderY - (sliderHeight/2)) - slop;
       int sliderBottom = sliderY + sliderHeight + slop;
       return ((x >= sliderX) && (x <= (sliderX    + sliderWidth)) && (y >= sliderTop)  && (y <= sliderBottom));
-   } 
+   }
+   
 }
 
 

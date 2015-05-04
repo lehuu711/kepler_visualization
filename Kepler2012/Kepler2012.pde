@@ -4,6 +4,9 @@
  2011 - new data added in 2012
  blprnt@blprnt.com
  
+ @ASTR051 Squirtle Squad
+ @May 2015
+ 
  You can toggle between view modes with the keys 4,3,2,1,` 
  
  */
@@ -97,15 +100,6 @@ void setup() {
   background(0);
   smooth();  
   textFont(label, 96);
-
-// TODO delete
-// Because NASA released their data from 2011 and 2012 in somewhat
-// different formats, there are two functions to load the data and populate
-// the 'galaxy'.
-//  getPlanets(sketchPath + "/data/KeplerData.csv", false);
-//  println(planets.size());
-//  getPlanets(sketchPath + "/data/planets2012_2.csv", true);
-//  println(planets.size());
   
   // Populate the "galaxy"
   getPlanets(sketchPath + "/data/20150504KOI.csv", true);
@@ -116,7 +110,7 @@ void setup() {
   controls = new Controls();
   showControls = 1;
   
-  // Load Easter eggs
+  // Load Easter egg images
   egg1 = loadImage("head1.png");
   egg2 = loadImage("head2.png");
 }
@@ -124,18 +118,6 @@ void setup() {
 void getPlanets(String url, boolean header) {
   // The data is loaded and a planet is made from each line of the data
   String[] pArray = loadStrings(url);
-  
-  
-// TODO delete
-//  int start = is2012 ? 0 : 1; // skip header on 2011 data
-//  for (int i = start; i < pArray.length; i++) {
-//    ExoPlanet p;
-//    if (is2012) {
-//      p = new ExoPlanet().fromCSV2012(split(pArray[i], ",")).init();
-//    } else {
-//      p = new ExoPlanet().fromCSV2011(split(pArray[i], ",")).init();
-//    }
-
   int start = header ? 1 : 0; // skip header 
   for (int i = start; i < pArray.length; i++) { 
     ExoPlanet p;
@@ -147,7 +129,7 @@ void getPlanets(String url, boolean header) {
     maxSize = max(p.radius, maxSize);
     minSize = min(p.radius, minSize);
 
-    // These are two planets from the 2011 data set that I wanted to feature.
+    // The possibly habitable exoplanets
     if (p.KOI.equals("326.01") || p.KOI.equals("314.02")) {
       p.feature = true;
       p.label = p.KOI;
@@ -264,7 +246,7 @@ void draw() {
 
   background(10);
   
-  // show controls
+  // Show controls
   if (showControls == 1) {
      controls.render(); 
   }
@@ -282,7 +264,7 @@ void draw() {
   noStroke();
   ellipse(0, 0, 10, 10);
 
-  // Draw Rings:
+  // Draw Rings
   strokeWeight(2);
   noFill();
 
@@ -355,6 +337,7 @@ void draw() {
       p.render(panel);
     }
   }
+  
   popMatrix();
   translate(xShift,yShift);
   panel.render();
@@ -368,29 +351,29 @@ void draw() {
   xShift += (txShift-xShift) * 0.1;
   yShift += (tyShift-yShift) * 0.1;
   
-  //Make sure mouse isn't still clicked by the end of the frame
+  // Make sure mouse isn't still clicked by the end of the frame
   mouseClicked = false;
 }
 
 void calcMousePos() {
-  //Overhead view, (x,y) coordinates
+  // Overhead view, (x,y) coordinates
   if (tflatness == 0) {
     mX = (mouseX+xShift - xScreen/2)/zoom;
     mY = (mouseY-yShift - yScreen/2)/zoom;
     mZ = 0;
   }
-  //Chart view, (y,z) (?) coordinates
-  //(0,0) starts at the bottom left (center of revolution)
+  // Chart view, (y,z) (?) coordinates
+  // (0,0) starts at the bottom left (center of revolution)
   else if (tflatness == 1) {
-    //x-field is not used for the plot
+    // x-field is not used for the plot
     mX = 0;
     
-    //Plot edge (x-axis) starts at bottom, 1/10 of screen width
-    //x-axis is actually the y-field value
+    // Plot edge (x-axis) starts at bottom, 1/10 of screen width
+    // x-axis is actually the y-field value
     mY = (mouseX+xShift-xScreen/10)/zoom;
     
-    //Plot edge starts at bottom 500+(screen height - 500)/2
-    //y-axis is actually the z-field value
+    // Plot edge starts at bottom 500+(screen height - 500)/2
+    // y-axis is actually the z-field value
     float offset = 500+(yScreen-500)/2;
     mZ = (offset-mouseY-yShift)/zoom;
   }
@@ -401,6 +384,7 @@ void calcBlink() {
   if (t>250 || t<150) {
     tBlink *= -1;
   }
+  
   t = max(150,t);
   t = min(250,t);
   blink = t;
@@ -483,42 +467,38 @@ void mouseClicked() {
   if (fieldFlip.isClicked(mouseClicked)) {
     tflatness = (tflatness == 1) ? (0):(1);
     toggleFlatness(tflatness);
-  }
-  else if (fieldTilt.isClicked(mouseClicked)) {
+  } else if (fieldTilt.isClicked(mouseClicked)) {
     if (tflatness == 1) {
-    }
-    else if (trot.x == PI/2) {
+    } else if (trot.x == PI/2) {
       trot.x = 0;
-    }
-    else {
+    } else {
       trot.x = PI/2;
     }
-  }
-  else if (noSort.isClicked(mouseClicked)) {
+  } else if (noSort.isClicked(mouseClicked)) {
     unSort();
     tflatness = 0;
     trot.x = 0;
     trot.z = 0;
     txShift = 0;
     tyShift = 0;
-    
-  }
-  else if (tempSort.isClicked(mouseClicked)) {
+  } else if (tempSort.isClicked(mouseClicked)) {
     sortByTemp(); 
     trot.x = PI/2;
     yLabel = "Temperature (Kelvin)";
-    //toggleFlatness(1);
+    
+    // toggleFlatness(1);
     yMax = maxTemp;
     yMin = minTemp;
-  }
-  else if (sizeSort.isClicked(mouseClicked)) {
+  } else if (sizeSort.isClicked(mouseClicked)) {
     sortBySize();
     trot.x = PI/2;
-    //toggleFlatness(1);
+    // toggleFlatness(1);
+    
     yLabel = "Planet Size (Earth Radii)";
     yMax = maxSize;
     yMin = 0;
   }
+  
 }
 
 
