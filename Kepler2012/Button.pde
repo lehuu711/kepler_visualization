@@ -11,6 +11,7 @@ class Button {
   float y;
   float xSize;
   float ySize;
+  boolean showDesc = true;
   
   String description; //Description for button
   
@@ -31,6 +32,11 @@ class Button {
     return false;
   }
   
+  //Show or hide the description box
+  void setDesc(boolean desc) {
+    showDesc = desc;
+  }
+  
   void update(float x, float y) {
     this.x = x;
     this.y = y;
@@ -46,7 +52,9 @@ class Button {
     rectMode(CENTER);
     noFill();
     rect(x,y,xSize,ySize);
-    mouseOver();
+    if (showDesc) {
+      mouseOver();
+    }
   }
   
   //Displays the description when mouse goes over

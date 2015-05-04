@@ -51,6 +51,7 @@ class SidePanel {
     this.xInit = this.x;
     
     b = new CloseBox(x+xSize/2-11,y-ySize/2+10,20,20,"closeBox");
+    b.setDesc(false);
   }
   
   //Add in an ExoPlanet to generate data from
