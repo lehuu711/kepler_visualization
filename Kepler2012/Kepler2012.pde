@@ -16,6 +16,13 @@ PFont label = createFont("Helvetica", 96);
 int xScreen = 1000;
 int yScreen = 800;
 
+//Camera movement variables
+float xShift = 0;
+float yShift = 0;
+float txShift = 0;
+float tyShift = 0;
+final static float shift = 20;
+
 // Here's the big list that will hold all of our planets
 ArrayList<ExoPlanet> planets = new ArrayList();
 
@@ -80,16 +87,15 @@ ExoPlanet markedPlanet = null;
 SidePanel panel = new SidePanel(xScreen,yScreen,300);
 
 // buttons
-ModeButton fieldFlip = new ModeButton(48,350,20,20,"Flip between Views");
-ModeButton fieldTilt = new ModeButton(48,400,20,20,"Tilt Plane");
-ModeButton noSort = new ModeButton(48,450,20,20,"Unsort");
+ModeButton noSort = new ModeButton(48,350,20,20,"Reset Parameters");
+ModeButton fieldFlip = new ModeButton(48,400,20,20,"Flip between Views");
+ModeButton fieldTilt = new ModeButton(48,450,20,20,"Tilt Plane (Non-Plot View Only)");
 ModeButton sizeSort = new ModeButton(48,500,20,20, "Sort by Size");
 ModeButton tempSort = new ModeButton(48,550,20,20, "Sort by Temperature");
 
 
 void setup() {
   size(xScreen, yScreen, OPENGL);
-  egg1 = loadImage
   background(0);
   smooth();  
 
@@ -233,12 +239,6 @@ void draw() {
         zoom = controls.getZoomValue(mouseY);        
         tzoom = zoom;
      } 
-     
-     // MousePress - Rotation Adjustment
-     else if (!draggingZoomSlider) {
-       //trot.x += (pmouseY - mouseY) * 0.01;
-       //trot.z += (pmouseX - mouseX) * 0.01;
-     }
   }
 
 
@@ -250,6 +250,7 @@ void draw() {
      controls.render(); 
   }
   
+  translate(-xShift,-yShift);
   pushMatrix();
   // We want the center to be in the middle and slightly down when flat, and to the left and down when raised
   translate(width/2 - (width * flatness * 0.4), height/2 + (160 * rot.x));
@@ -336,23 +337,27 @@ void draw() {
     }
   }
   popMatrix();
+  translate(xShift,yShift);
   panel.render();
-  
-  //Make sure mouse isn't still clicked by the end of the frame
-  mouseClicked = false;
   
   fieldFlip.render();
   fieldTilt.render();
   noSort.render();
   sizeSort.render();
   tempSort.render();
+  
+  xShift += (txShift-xShift) * 0.1;
+  yShift += (tyShift-yShift) * 0.1;
+  
+  //Make sure mouse isn't still clicked by the end of the frame
+  mouseClicked = false;
 }
 
 void calcMousePos() {
   //Overhead view, (x,y) coordinates
   if (tflatness == 0) {
-    mX = (mouseX - xScreen/2)/zoom;
-    mY = (mouseY - yScreen/2)/zoom;
+    mX = (mouseX+xShift - xScreen/2)/zoom;
+    mY = (mouseY-yShift - yScreen/2)/zoom;
     mZ = 0;
   }
   //Chart view, (y,z) (?) coordinates
@@ -363,12 +368,12 @@ void calcMousePos() {
     
     //Plot edge (x-axis) starts at bottom, 1/10 of screen width
     //x-axis is actually the y-field value
-    mY = (mouseX-xScreen/10)/zoom;
+    mY = (mouseX+xShift-xScreen/10)/zoom;
     
     //Plot edge starts at bottom 500+(screen height - 500)/2
     //y-axis is actually the z-field value
     float offset = 500+(yScreen-500)/2;
-    mZ = (offset-mouseY)/zoom;
+    mZ = (offset-mouseY-yShift)/zoom;
   }
 }
 
@@ -412,10 +417,16 @@ void keyPressed() {
   }
 
   if (keyCode == UP) {
-    //tzoom += 0.025;
+    tyShift -= shift;
   } 
   else if (keyCode == DOWN) {
-    //tzoom -= 0.025;
+    tyShift += shift;
+  }
+  else if (keyCode == LEFT) {
+    txShift -= shift;
+  } 
+  else if (keyCode == RIGHT) {
+    txShift += shift;
   }
 
   else if (key == '`') {
@@ -433,7 +444,6 @@ void toggleFlatness(float f) {
   else {
     trot.x = 0;
     trot.z = 0;
-    //unSort();
   }
 }
 
@@ -459,6 +469,12 @@ void mouseClicked() {
   }
   else if (noSort.isClicked(mouseClicked)) {
     unSort();
+    tflatness = 0;
+    trot.x = 0;
+    trot.z = 0;
+    txShift = 0;
+    tyShift = 0;
+    
   }
   else if (tempSort.isClicked(mouseClicked)) {
     sortByTemp(); 
