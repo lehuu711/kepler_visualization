@@ -83,6 +83,7 @@ class SidePanel {
       println("Error: No Exoplanet data was found!");
       return;
     }
+    
     stroke(255,150);
     strokeWeight(1);
     float startX = x-xSize/2+fontH-10;
@@ -171,4 +172,5 @@ class SidePanel {
       printText();
     }
   }
+  
 }
