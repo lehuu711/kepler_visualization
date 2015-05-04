@@ -84,6 +84,7 @@ class ExoPlanet {
   float y;
   
   float eggN = random(2);
+  color eggC;
 
   // Constructor function
   ExoPlanet() {};
@@ -198,9 +199,11 @@ class ExoPlanet {
       popMatrix();
     }
     fill(col);
+    eggC = col;
     noStroke();
     if (isSelected && panel.getPlanet() != null && panel.getPlanet() == this) {    
       fill(220,blink);
+      eggC = color(220,blink);
       strokeWeight(1);
       stroke(255);
     }
@@ -210,7 +213,8 @@ class ExoPlanet {
       stroke(255);
     }
     if (easterEgg) {
-      tint(col);
+      tint(eggC);
+      imageMode(CENTER);
       if (eggN < 1) {
         image(egg1,0,0,PixelDiam,PixelDiam);
       } else {

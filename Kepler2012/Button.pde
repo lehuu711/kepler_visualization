@@ -74,7 +74,7 @@ class Button {
       y = max(0,y);
       
       rectMode(CORNER);
-      textAlign(RIGHT);
+      textAlign(CENTER);
       stroke(255,100);
       strokeWeight(1);
       fill(0,0,0);
