@@ -155,6 +155,7 @@ class SidePanel {
     x = min(xMax,x);
     
     stroke(255,100);
+    strokeWeight(1);
     fill(10,250);
     rect(x,y,xSize,ySize);
     
