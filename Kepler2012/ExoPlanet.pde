@@ -82,6 +82,8 @@ class ExoPlanet {
   
   float x;
   float y;
+  
+  float eggN = random(2);
 
   // Constructor function
   ExoPlanet() {};
@@ -209,12 +211,12 @@ class ExoPlanet {
     }
     if (easterEgg) {
       tint(col);
-      int i = (int)random(1);
-      if (i == 0) {
-        image(egg1,0,0);
+      if (eggN < 1) {
+        image(egg1,0,0,PixelDiam,PixelDiam);
       } else {
-        image(egg2,0,0);
+        image(egg2,0,0,PixelDiam,PixelDiam);
       }
+      eggN = (eggN+0.05)%2;
     }
     else {
       ellipse(0, 0, PixelDiam, PixelDiam);
