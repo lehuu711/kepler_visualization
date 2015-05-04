@@ -137,10 +137,10 @@ void getPlanets(String url, boolean header) {
 //    }
 
   int start = header ? 1 : 0; // skip header 
-  for (int i = start; i < 2000; i++) { //pArray.length
+  for (int i = start; i < pArray.length; i++) { 
     ExoPlanet p;
     p = new ExoPlanet().from(split(pArray[i], ",")).init();
-    if(p.radius < 500) {
+    if(p.radius < 100) {
       planets.add(p);
     }
     
