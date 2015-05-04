@@ -39,10 +39,10 @@ float YEAR = 50000;     // One year, in frames
 // Max/Min numbers
 float yMax = 10;
 float yMin = 0;
-float minIncl = 0;
 float maxIncl = 90;
+float minIncl = 0;
 float maxSize = 0;
-float minSize = 1000000;
+float minSize = 100000;
 float maxTemp = 3257;
 float minTemp = 3257;
 
