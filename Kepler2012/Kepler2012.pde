@@ -70,6 +70,10 @@ int tBlink = 2;
 
 boolean mouseClicked = false;
 
+boolean easterEgg = false;
+PImage egg1;
+PImage egg2;
+
 ExoPlanet markedPlanet = null;
 
 // displays planet data
@@ -85,6 +89,7 @@ ModeButton tempSort = new ModeButton(48,550,20,20, "Sort by Temperature");
 
 void setup() {
   size(xScreen, yScreen, OPENGL);
+  egg1 = loadImage
   background(0);
   smooth();  
 
