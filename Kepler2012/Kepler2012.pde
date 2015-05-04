@@ -3,11 +3,13 @@
  Kepler Visualization
  2011 - new data added in 2012
  blprnt@blprnt.com
+ You can toggle between view modes with the keys 4,3,2,1,`
  
  @ASTR051 Squirtle Squad
  @May 2015
- 
- You can toggle between view modes with the keys 4,3,2,1,` 
+ Visualization of Kepler candidates identified from 2011 to 2015. 
+ The displayed data is limited to exoplanets with less than 100 
+ earth radii. 
  
  */
 
@@ -35,12 +37,14 @@ float AU = 1500;        // Astronomical Unit, in pixels
 float YEAR = 50000;     // One year, in frames
 
 // Max/Min numbers
-float maxTemp = 3257;
-float minTemp = 3257;
 float yMax = 10;
 float yMin = 0;
+float minIncl = 0;
+float maxIncl = 90;
 float maxSize = 0;
 float minSize = 1000000;
+float maxTemp = 3257;
+float minTemp = 3257;
 
 // Axis labels
 String xLabel = "Semi-major Axis (Astronomical Units)";
@@ -87,11 +91,12 @@ ExoPlanet markedPlanet = null;
 SidePanel panel = new SidePanel(xScreen,yScreen,300);
 
 // Buttons
-ModeButton noSort = new ModeButton(48,350,20,20,"Reset Parameters");
-ModeButton fieldFlip = new ModeButton(48,400,20,20,"Flip between Views");
-ModeButton fieldTilt = new ModeButton(48,450,20,20,"Tilt Plane (Non-Plot View Only)");
-ModeButton sizeSort = new ModeButton(48,500,20,20, "Sort by Size");
-ModeButton tempSort = new ModeButton(48,550,20,20, "Sort by Temperature");
+ModeButton noSort = new ModeButton(48,350,20,20, "Reset Parameters");
+ModeButton fieldFlip = new ModeButton(48,400,20,20, "Flip between Views");
+ModeButton fieldTilt = new ModeButton(48,450,20,20, "Tilt Plane (Non-Plot View Only)");
+ModeButton sizeSort = new ModeButton(48,515,20,20, "Sort by Size");
+ModeButton inclSort = new ModeButton(48,565,20,20, "Sort by Inclination");
+ModeButton tempSort = new ModeButton(48,615,20,20, "Sort by Temperature");
 
 boolean mouseClicked = false;
 
@@ -165,7 +170,6 @@ void updatePlanetColors()
   }
   colorMode(RGB);
 }
-
 
 void addMarkerPlanets() {
   // Now, add the solar system planets
@@ -241,9 +245,7 @@ void draw() {
         tzoom = zoom;
      } 
   }
-
-
-
+  
   background(10);
   
   // Show controls
@@ -346,6 +348,7 @@ void draw() {
   fieldTilt.render();
   noSort.render();
   sizeSort.render();
+  inclSort.render();
   tempSort.render();
   
   xShift += (txShift-xShift) * 0.1;
@@ -393,7 +396,14 @@ void calcBlink() {
 void sortBySize() {
   // Raise the planets off of the plane according to their size
   for (int i = 0; i < planets.size(); i++) {
-    planets.get(i).tz = map(planets.get(i).radius, 0, maxSize, 0, 500);
+    planets.get(i).tz = map(planets.get(i).incl, 0, maxSize, 0, 500);
+  }
+}
+
+void sortByIncl() {
+  // Raise the planets off of the plane according to their inclination
+  for (int i = 0; i < planets.size(); i++) {
+    planets.get(i).tz = map(planets.get(i).incl, 0, maxIncl, 0, 500);
   }
 }
 
@@ -423,18 +433,13 @@ void keyPressed() {
 
   if (keyCode == UP) {
     tyShift -= shift;
-  } 
-  else if (keyCode == DOWN) {
+  } else if (keyCode == DOWN) {
     tyShift += shift;
-  }
-  else if (keyCode == LEFT) {
+  } else if (keyCode == LEFT) {
     txShift -= shift;
-  } 
-  else if (keyCode == RIGHT) {
+  } else if (keyCode == RIGHT) {
     txShift += shift;
-  }
-
-  else if (key == '`') {
+  } else if (key == '`') {
     unSort(); 
     toggleFlatness(0);
   }
@@ -445,8 +450,7 @@ void toggleFlatness(float f) {
   if (tflatness == 1) {
     trot.x = PI/2;
     trot.z = -PI/2;
-  }
-  else {
+  } else {
     trot.x = 0;
     trot.z = 0;
   }
@@ -481,6 +485,22 @@ void mouseClicked() {
     trot.z = 0;
     txShift = 0;
     tyShift = 0;
+  } else if (sizeSort.isClicked(mouseClicked)) {
+    sortBySize();
+    trot.x = PI/2;
+    yLabel = "Planet Size (Earth Radii)";
+    
+    // toggleFlatness(1);
+    yMax = maxSize;
+    yMin = 0;
+  } else if (inclSort.isClicked(mouseClicked)) {
+    sortByIncl();
+    trot.x = PI/2;
+    yLabel = "Inclination (Degree)";
+    
+    // toggleFlatness(1);
+    yMax = maxIncl;
+    yMin = 0;
   } else if (tempSort.isClicked(mouseClicked)) {
     sortByTemp(); 
     trot.x = PI/2;
@@ -489,16 +509,7 @@ void mouseClicked() {
     // toggleFlatness(1);
     yMax = maxTemp;
     yMin = minTemp;
-  } else if (sizeSort.isClicked(mouseClicked)) {
-    sortBySize();
-    trot.x = PI/2;
-    // toggleFlatness(1);
-    
-    yLabel = "Planet Size (Earth Radii)";
-    yMax = maxSize;
-    yMin = 0;
   }
-  
 }
 
 
