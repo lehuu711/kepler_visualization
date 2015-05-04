@@ -72,8 +72,10 @@ boolean mouseClicked = false;
 
 ExoPlanet markedPlanet = null;
 
+// displays planet data
 SidePanel panel = new SidePanel(xScreen,yScreen,300);
 
+// buttons
 ModeButton fieldFlip = new ModeButton(48,350,20,20,"Flip between Views");
 ModeButton fieldTilt = new ModeButton(48,400,20,20,"Tilt Plane");
 ModeButton noSort = new ModeButton(48,450,20,20,"Unsort");
