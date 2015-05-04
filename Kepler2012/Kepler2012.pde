@@ -114,6 +114,8 @@ void setup() {
   controls = new Controls();
   showControls = 1;
   
+  egg1 = loadImage("head1.png");
+  egg2 = loadImage("head2.png");
 }
 
 void getPlanets(String url, boolean is2012) {
@@ -414,6 +416,8 @@ void keyPressed() {
     save("out/Kepler" + timeStamp + ".png");
   } else if (key == 'c'){
      showControls = -1 * showControls;
+  } else if (key == 'e') {
+    easterEgg = true;
   }
 
   if (keyCode == UP) {
@@ -444,6 +448,12 @@ void toggleFlatness(float f) {
   else {
     trot.x = 0;
     trot.z = 0;
+  }
+}
+
+void keyReleased() {
+  if (key == 'e') {
+    easterEgg = false;
   }
 }
 

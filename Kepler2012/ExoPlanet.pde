@@ -207,8 +207,18 @@ class ExoPlanet {
       strokeWeight(1);
       stroke(255);
     }
-    
-    ellipse(0, 0, PixelDiam, PixelDiam);
+    if (easterEgg) {
+      tint(col);
+      int i = (int)random(1);
+      if (i == 0) {
+        image(egg1,0,0);
+      } else {
+        image(egg2,0,0);
+      }
+    }
+    else {
+      ellipse(0, 0, PixelDiam, PixelDiam);
+    }
     popMatrix();
   }
 }
