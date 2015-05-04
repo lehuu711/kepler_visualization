@@ -12,18 +12,18 @@
 import processing.opengl.*;
 PFont label = createFont("Helvetica", 96);
 
-//Display sizes
+// Display size
 int xScreen = 1000;
 int yScreen = 800;
 
-//Camera movement variables
+// Camera movement variables
 float xShift = 0;
 float yShift = 0;
 float txShift = 0;
 float tyShift = 0;
 final static float shift = 20;
 
-// Here's the big list that will hold all of our planets
+// Hold all of our planets
 ArrayList<ExoPlanet> planets = new ArrayList();
 
 // Conversion constants
@@ -34,10 +34,8 @@ float YEAR = 50000;     // One year, in frames
 // Max/Min numbers
 float maxTemp = 3257;
 float minTemp = 3257;
-
 float yMax = 10;
 float yMin = 0;
-
 float maxSize = 0;
 float minSize = 1000000;
 
@@ -45,7 +43,7 @@ float minSize = 1000000;
 String xLabel = "Semi-major Axis (Astronomical Units)";
 String yLabel = "Temperature (Kelvin)";
 
-// Rotation Vectors - control the main 3D space
+// Rotation vectors used to control the main 3D space
 PVector rot = new PVector();
 PVector trot = new PVector();
 
@@ -53,60 +51,64 @@ PVector trot = new PVector();
 float zoom = 0;
 float tzoom = 0.3;
 
-// This is a zero-one weight that controls whether the planets are flat on the
+// A zero-one weight that controls whether the planets are flat on the
 // plane (0) or not (1)
 float flatness = 0;
 float tflatness = 0;
 
-// add controls (e.g. zoom, sort selection)
+// Add controls (e.g. zoom, sort selection)
 Controls controls; 
 int showControls;
 boolean draggingZoomSlider = false;
 boolean isMoving = true;
 
-//Parameters to transpose the mouse location on the field
+// Parameters to transpose the mouse location on the field
 float mX = 0;
 float mY = 0;
 float mZ = 0;
 float mTheta = 0;
 float mRadius = 0;
 
-//Value for making selected ExoPlanets flicker
+// Value for making selected ExoPlanets flicker
 float blink = 0;
 int tBlink = 2;
 
-boolean mouseClicked = false;
-
+// Easter egg fun
 boolean easterEgg = false;
 PImage egg1;
 PImage egg2;
 
 ExoPlanet markedPlanet = null;
 
-// displays planet data
+// Displays planet data
 SidePanel panel = new SidePanel(xScreen,yScreen,300);
 
-// buttons
+// Buttons
 ModeButton noSort = new ModeButton(48,350,20,20,"Reset Parameters");
 ModeButton fieldFlip = new ModeButton(48,400,20,20,"Flip between Views");
 ModeButton fieldTilt = new ModeButton(48,450,20,20,"Tilt Plane (Non-Plot View Only)");
 ModeButton sizeSort = new ModeButton(48,500,20,20, "Sort by Size");
 ModeButton tempSort = new ModeButton(48,550,20,20, "Sort by Temperature");
 
+boolean mouseClicked = false;
 
 void setup() {
   size(xScreen, yScreen, OPENGL);
   background(0);
   smooth();  
-
   textFont(label, 96);
 
-  // Because NASA released their data from 2011 and 2012 in somewhat
-  // different formats, there are two functions to load the data and populate
-  // the 'galaxy'.
-  getPlanets(sketchPath + "/data/KeplerData.csv", false);
-  println(planets.size());
-  getPlanets(sketchPath + "/data/planets2012_2.csv", true);
+// TODO delete
+// Because NASA released their data from 2011 and 2012 in somewhat
+// different formats, there are two functions to load the data and populate
+// the 'galaxy'.
+//  getPlanets(sketchPath + "/data/KeplerData.csv", false);
+//  println(planets.size());
+//  getPlanets(sketchPath + "/data/planets2012_2.csv", true);
+//  println(planets.size());
+  
+  // Populate the "galaxy"
+  getPlanets(sketchPath + "/data/20150504KOI.csv", true);
   println(planets.size());
   addMarkerPlanets();
   updatePlanetColors();
@@ -114,23 +116,34 @@ void setup() {
   controls = new Controls();
   showControls = 1;
   
+  // Load Easter eggs
   egg1 = loadImage("head1.png");
   egg2 = loadImage("head2.png");
 }
 
-void getPlanets(String url, boolean is2012) {
-  // Here, the data is loaded and a planet is made from each line.
+void getPlanets(String url, boolean header) {
+  // The data is loaded and a planet is made from each line of the data
   String[] pArray = loadStrings(url);
-  int start = is2012 ? 0 : 1; // skip header on 2011 data
-  for (int i = start; i < pArray.length; i++) {
+  
+  
+// TODO delete
+//  int start = is2012 ? 0 : 1; // skip header on 2011 data
+//  for (int i = start; i < pArray.length; i++) {
+//    ExoPlanet p;
+//    if (is2012) {
+//      p = new ExoPlanet().fromCSV2012(split(pArray[i], ",")).init();
+//    } else {
+//      p = new ExoPlanet().fromCSV2011(split(pArray[i], ",")).init();
+//    }
+
+  int start = header ? 1 : 0; // skip header 
+  for (int i = start; i < 2000; i++) { //pArray.length
     ExoPlanet p;
-    if (is2012) {
-      p = new ExoPlanet().fromCSV2012(split(pArray[i], ",")).init();
-    } 
-    else {
-      p = new ExoPlanet().fromCSV2011(split(pArray[i], ",")).init();
+    p = new ExoPlanet().from(split(pArray[i], ",")).init();
+    if(p.radius < 500) {
+      planets.add(p);
     }
-    planets.add(p);
+    
     maxSize = max(p.radius, maxSize);
     minSize = min(p.radius, minSize);
 
@@ -178,6 +191,7 @@ void addMarkerPlanets() {
   mars.period = 686;
   mars.radius = 0.533;
   mars.axis = 1.523;
+  mars.incl = 1.850;
   mars.temp = 212;
   mars.feature = true;
   mars.label = "Mars";
@@ -188,6 +202,7 @@ void addMarkerPlanets() {
   earth.period = 365;
   earth.radius = 1;
   earth.axis = 1;
+  earth.incl = 0;
   earth.temp = 254;
   earth.feature = true;
   earth.label = "Earth";
@@ -198,6 +213,7 @@ void addMarkerPlanets() {
   jupiter.period = 4331;
   jupiter.radius = 11.209;
   jupiter.axis = 5.2;
+  jupiter.incl = 7.005;
   jupiter.temp = 124;
   jupiter.feature = true;
   jupiter.label = "Jupiter";
@@ -208,6 +224,7 @@ void addMarkerPlanets() {
   mercury.period = 87.969;
   mercury.radius = 0.3829;
   mercury.axis = 0.387;
+  mercury.incl = 1.305;
   mercury.temp = 434;
   mercury.feature = true;
   mercury.label = "Mercury";

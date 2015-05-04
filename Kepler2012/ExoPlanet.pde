@@ -94,8 +94,9 @@ class ExoPlanet {
   String KOI;
   float period;
   float radius;
-  float temp;
   float axis;
+  float incl;
+  float temp;
   int vFlag = 1;
   
   // Real movement/render properties
@@ -125,26 +126,39 @@ class ExoPlanet {
   
   ExoPlanet(boolean marker) {isSelected = marker;}
   
-  // Load exoplanet data from a comma-delimited string (see key at top of class)
-  ExoPlanet fromCSV2012(String[] sa) {
-    KOI = sa[0];
-    period = float(sa[1]);
-    radius = float(sa[2]);
-    axis = float(sa[3]);
-    temp = float(sa[4]);
-    return(this);
-  }
-
-  // Load exoplanet data from a comma-delimited string (see key at top of class)
-  ExoPlanet fromCSV2011(String[] sa) {
-    KOI = sa[0];
+  // Load exoplanet data from 20150504KOI (see key at top of class)
+  ExoPlanet from(String[] sa) {
+    KOI = sa[2];
     period = float(sa[6]);
-    radius = float(sa[14]);
+    radius = float(sa[12]);
     axis = float(sa[15]);
-    temp = float(sa[16]);
-    vFlag = int(sa[18]);
+    incl = float(sa[18]);
+    temp = float(sa[21]);
     return(this);
   }
+  
+  // TODO delete
+  // Load exoplanet data from a comma-delimited string (see key at top of class)
+//  ExoPlanet fromCSV2012(String[] sa) {
+//    KOI = sa[0];
+//    period = float(sa[1]);
+//    radius = float(sa[2]);
+//    axis = float(sa[3]);
+//    temp = float(sa[4]);
+//    return(this);
+//  }
+
+  // TODO delete
+  // Load exoplanet data from a comma-delimited string (see key at top of class)
+//  ExoPlanet fromCSV2011(String[] sa) {
+//    KOI = sa[0];
+//    period = float(sa[6]);
+//    radius = float(sa[14]);
+//    axis = float(sa[15]);
+//    temp = float(sa[16]);
+//    vFlag = int(sa[18]);
+//    return(this);
+//  }
 
   // Initialize pixel-based motion data, color, etc. from exoplanet data
   ExoPlanet init() {
